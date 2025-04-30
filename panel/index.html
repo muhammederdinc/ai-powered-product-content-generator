@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="">
+<!doctype html>
+<html lang="tr">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>AI-Powered Product Content Generator</title>
+    <script>
+      // Sayfa yüklenirken dark mode yanıp sönme sorununu önler
+      const darkMode = localStorage.getItem('darkMode')
+      if (
+        darkMode === 'true' ||
+        (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
