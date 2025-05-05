@@ -2,8 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowPathIcon, ArrowDownTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
+import { useDarkMode } from '../composables/useDarkMode'
 
 const router = useRouter()
+const { isDarkMode } = useDarkMode()
 
 // Mock veriler
 const generatedData = ref({
@@ -58,12 +60,14 @@ const goToHome = () => {
 </script>
 
 <template>
-  <div class="pb-16 result-page-transition bg-slate-950 text-white">
+  <div
+    class="pb-16 result-page-transition bg-white dark:bg-slate-950 text-gray-900 dark:text-white"
+  >
     <!-- Navigasyon -->
     <nav class="flex items-center justify-between mb-6 px-4 py-3">
       <button
         @click="goToHome"
-        class="flex items-center px-4 py-2 text-gray-300 hover:text-indigo-400 transition-colors"
+        class="flex items-center px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -82,19 +86,19 @@ const goToHome = () => {
     </nav>
 
     <!-- Ana Başlık -->
-    <h1 class="text-3xl font-bold mb-8 text-center text-white">
+    <h1 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">
       AI Tarafından Oluşturulan İçerikler
     </h1>
 
     <!-- Fotoğraf Galerisi -->
-    <div class="bg-slate-900 rounded-xl p-6 mb-10 mx-4">
-      <h2 class="text-2xl font-bold mb-4 text-white">Ürün Fotoğrafları</h2>
+    <div class="bg-gray-100 dark:bg-slate-900 rounded-xl p-6 mb-10 mx-4 shadow-md">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Ürün Fotoğrafları</h2>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div
           v-for="(photo, index) in generatedData.photos"
           :key="index"
-          class="image-card bg-slate-800"
+          class="image-card bg-gray-200 dark:bg-slate-800"
         >
           <img
             :src="photo"
@@ -107,7 +111,7 @@ const goToHome = () => {
       <div class="mt-4 flex justify-end">
         <button
           @click="downloadContent('photos')"
-          class="flex items-center px-4 py-2 bg-slate-800 rounded-lg text-gray-200 hover:bg-slate-700 transition-colors mr-2"
+          class="flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-800 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors mr-2"
         >
           <ArrowDownTrayIcon class="w-5 h-5 mr-2" />
           Fotoğrafları İndir
@@ -116,22 +120,22 @@ const goToHome = () => {
     </div>
 
     <!-- Ürün Başlığı ve Açıklaması -->
-    <div class="bg-slate-900 rounded-xl p-6 mb-10 shadow-md mx-4">
-      <h2 class="text-2xl font-bold mb-4 text-white">Ürün Metinleri</h2>
+    <div class="bg-gray-100 dark:bg-slate-900 rounded-xl p-6 mb-10 shadow-md mx-4">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Ürün Metinleri</h2>
 
       <div class="border-l-4 border-indigo-500 pl-4 py-3 mt-4">
-        <h3 class="text-xl font-bold text-white mb-2">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
           {{ generatedData.productName }}
         </h3>
 
-        <div class="text-gray-300 whitespace-pre-line">
+        <div class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
           {{ generatedData.description }}
         </div>
       </div>
 
       <div class="mt-4 flex justify-end">
         <button
-          class="flex items-center px-4 py-2 bg-slate-800 rounded-lg text-gray-200 hover:bg-slate-700 transition-colors"
+          class="flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-800 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors"
         >
           <ArrowDownTrayIcon class="w-5 h-5 mr-2" />
           Metinleri Kopyala
@@ -158,15 +162,17 @@ const goToHome = () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Post -->
         <div
-          class="instagram-card bg-slate-900 text-white overflow-hidden rounded-lg h-full flex flex-col"
+          class="instagram-card bg-white dark:bg-slate-900 text-gray-900 dark:text-white overflow-hidden rounded-lg h-full flex flex-col"
         >
           <div
-            class="instagram-header bg-slate-900 p-3 flex items-center border-b border-slate-700"
+            class="instagram-header bg-white dark:bg-slate-900 p-3 flex items-center border-b border-gray-200 dark:border-slate-700"
           >
             <div
               class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 to-purple-600 mr-2 flex items-center justify-center"
             >
-              <div class="w-7 h-7 rounded-full bg-slate-900 flex items-center justify-center">
+              <div
+                class="w-7 h-7 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center"
+              >
                 <img
                   src="https://ui-avatars.com/api/?name=SH&background=0D1117&color=fff"
                   alt="Mağaza profil"
@@ -176,9 +182,9 @@ const goToHome = () => {
             </div>
             <div class="flex-1">
               <p class="text-sm font-semibold">moda_butigim</p>
-              <p class="text-xs text-gray-400">Sponsored</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Sponsored</p>
             </div>
-            <button class="text-gray-400">
+            <button class="text-gray-500 dark:text-gray-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -197,7 +203,7 @@ const goToHome = () => {
           </div>
 
           <div
-            class="flex-grow relative overflow-hidden bg-slate-800 flex items-center justify-center"
+            class="flex-grow relative overflow-hidden bg-gray-200 dark:bg-slate-800 flex items-center justify-center"
           >
             <img
               :src="generatedData.socialMedia.instagram.post"
@@ -206,7 +212,7 @@ const goToHome = () => {
             />
           </div>
 
-          <div class="bg-slate-900 p-3">
+          <div class="bg-white dark:bg-slate-900 p-3">
             <div class="flex justify-between mb-2">
               <div class="flex space-x-4">
                 <button class="focus:outline-none">
@@ -280,35 +286,37 @@ const goToHome = () => {
             <p class="text-sm">
               <span class="font-semibold">moda_butigim</span> Yeni sezon
               {{ generatedData.productName.toLowerCase() }} şimdi satışta! %100 pamuklu, konforlu
-              bir günlük stil... <span class="text-gray-400">daha fazla</span>
+              bir günlük stil... <span class="text-gray-500 dark:text-gray-400">daha fazla</span>
             </p>
-            <p class="text-gray-400 text-xs mt-1">47 dakika önce</p>
+            <p class="text-gray-500 dark:text-gray-400 text-xs mt-1">47 dakika önce</p>
           </div>
 
-          <div class="px-4 py-2 flex justify-end space-x-2 border-t border-slate-700">
+          <div
+            class="px-4 py-2 flex justify-end space-x-2 border-t border-gray-200 dark:border-slate-700"
+          >
             <button
               @click="downloadContent('instagram')"
-              class="p-2 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+              class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="İndir"
             >
-              <ArrowDownTrayIcon class="w-5 h-5 text-white" />
+              <ArrowDownTrayIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
             <button
               @click="shareContent"
-              class="p-2 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+              class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="Paylaş"
             >
-              <ShareIcon class="w-5 h-5 text-white" />
+              <ShareIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
           </div>
         </div>
 
         <!-- Story -->
         <div
-          class="instagram-card bg-slate-900 text-white overflow-hidden rounded-lg h-full flex flex-col"
+          class="instagram-card bg-white dark:bg-slate-900 text-gray-900 dark:text-white overflow-hidden rounded-lg h-full flex flex-col"
         >
           <div
-            class="instagram-header bg-slate-900 p-3 flex items-center border-b border-slate-700"
+            class="instagram-header bg-white dark:bg-slate-900 p-3 flex items-center border-b border-gray-200 dark:border-slate-700"
           >
             <div
               class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 to-purple-600 flex items-center justify-center"
@@ -323,12 +331,12 @@ const goToHome = () => {
             </div>
             <div class="flex-1 ml-2">
               <p class="text-sm font-semibold">moda_butigim</p>
-              <p class="text-xs text-gray-400">15d</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">15d</p>
             </div>
             <button class="focus:outline-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
+                class="h-5 w-5 text-gray-500 dark:text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -343,17 +351,19 @@ const goToHome = () => {
             </button>
           </div>
 
-          <div class="flex-grow aspect-[9/16] overflow-hidden relative bg-slate-800">
+          <div
+            class="flex-grow aspect-[9/16] overflow-hidden relative bg-gray-200 dark:bg-slate-800"
+          >
             <img
               :src="generatedData.socialMedia.instagram.story"
               :alt="`${generatedData.productName} - Instagram Story`"
               class="w-full h-full object-cover"
             />
-            <div class="absolute top-0 left-0 right-0 h-1 bg-slate-900 p-0.5">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-white dark:bg-slate-900 p-0.5">
               <div class="flex w-full space-x-1">
-                <div class="h-0.5 bg-white flex-1"></div>
-                <div class="h-0.5 bg-white/30 flex-1"></div>
-                <div class="h-0.5 bg-white/30 flex-1"></div>
+                <div class="h-0.5 bg-gray-800 dark:bg-white flex-1"></div>
+                <div class="h-0.5 bg-gray-400 dark:bg-white/30 flex-1"></div>
+                <div class="h-0.5 bg-gray-400 dark:bg-white/30 flex-1"></div>
               </div>
             </div>
 
@@ -361,9 +371,9 @@ const goToHome = () => {
               <input
                 type="text"
                 placeholder="Yanıtla..."
-                class="bg-slate-900/40 border border-slate-600/40 text-white rounded-full text-sm py-2 px-4 flex-1 backdrop-blur-sm"
+                class="bg-white/40 dark:bg-slate-900/40 border border-gray-300/40 dark:border-slate-600/40 text-gray-900 dark:text-white rounded-full text-sm py-2 px-4 flex-1 backdrop-blur-sm"
               />
-              <button class="ml-2 text-white">
+              <button class="ml-2 text-gray-800 dark:text-white">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6"
@@ -382,20 +392,22 @@ const goToHome = () => {
             </div>
           </div>
 
-          <div class="px-4 py-2 flex justify-end space-x-2 border-t border-slate-700">
+          <div
+            class="px-4 py-2 flex justify-end space-x-2 border-t border-gray-200 dark:border-slate-700"
+          >
             <button
               @click="downloadContent('instagram')"
-              class="p-2 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+              class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="İndir"
             >
-              <ArrowDownTrayIcon class="w-5 h-5 text-white" />
+              <ArrowDownTrayIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
             <button
               @click="shareContent"
-              class="p-2 rounded-full bg-slate-700 hover:bg-slate-600 transition-colors"
+              class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="Paylaş"
             >
-              <ShareIcon class="w-5 h-5 text-white" />
+              <ShareIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
           </div>
         </div>
