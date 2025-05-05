@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ArrowPathIcon, ArrowDownTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowPathIcon,
+  ArrowDownTrayIcon,
+  ShareIcon,
+  ClipboardIcon,
+  CheckIcon,
+} from '@heroicons/vue/24/outline'
 import { useDarkMode } from '../composables/useDarkMode'
 
 const router = useRouter()
@@ -56,6 +62,32 @@ const shareContent = () => {
 // Ana sayfaya dönüş fonksiyonu
 const goToHome = () => {
   router.push('/')
+}
+
+// Kopyalama durumlarını izlemek için ref'ler
+const titleCopied = ref(false)
+const descriptionCopied = ref(false)
+
+// Kopyalama işlevi
+const copyToClipboard = (text: string, type: 'Başlık' | 'Açıklama') => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      if (type === 'Başlık') {
+        titleCopied.value = true
+        setTimeout(() => {
+          titleCopied.value = false
+        }, 2000)
+      } else {
+        descriptionCopied.value = true
+        setTimeout(() => {
+          descriptionCopied.value = false
+        }, 2000)
+      }
+    })
+    .catch((err) => {
+      console.error('Kopyalama başarısız oldu:', err)
+    })
 }
 </script>
 
@@ -121,25 +153,64 @@ const goToHome = () => {
 
     <!-- Ürün Başlığı ve Açıklaması -->
     <div class="bg-gray-100 dark:bg-slate-900 rounded-xl p-6 mb-10 shadow-md mx-4">
-      <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Ürün Metinleri</h2>
+      <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Ürün Metinleri</h2>
 
-      <div class="border-l-4 border-indigo-500 pl-4 py-3 mt-4">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-          {{ generatedData.productName }}
-        </h3>
-
-        <div class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
-          {{ generatedData.description }}
+      <!-- Başlık Bölümü -->
+      <div class="mb-6 bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">Ürün Başlığı</h3>
+          <button
+            @click="copyToClipboard(generatedData.productName, 'Başlık')"
+            class="flex items-center px-3 py-1 rounded-lg text-sm transition-colors"
+            :class="
+              titleCopied
+                ? 'bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200'
+                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600'
+            "
+          >
+            <transition name="fade" mode="out-in">
+              <CheckIcon v-if="titleCopied" class="w-4 h-4 mr-1" />
+              <ClipboardIcon v-else class="w-4 h-4 mr-1" />
+            </transition>
+            {{ titleCopied ? 'Kopyalandı' : 'Kopyala' }}
+          </button>
+        </div>
+        <div
+          class="border-l-4 border-indigo-500 pl-4 py-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-r-md"
+        >
+          <p class="text-xl font-bold text-gray-900 dark:text-white">
+            {{ generatedData.productName }}
+          </p>
         </div>
       </div>
 
-      <div class="mt-4 flex justify-end">
-        <button
-          class="flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-800 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors"
+      <!-- Açıklama Bölümü -->
+      <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">Ürün Açıklaması</h3>
+          <button
+            @click="copyToClipboard(generatedData.description, 'Açıklama')"
+            class="flex items-center px-3 py-1 rounded-lg text-sm transition-colors"
+            :class="
+              descriptionCopied
+                ? 'bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200'
+                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600'
+            "
+          >
+            <transition name="fade" mode="out-in">
+              <CheckIcon v-if="descriptionCopied" class="w-4 h-4 mr-1" />
+              <ClipboardIcon v-else class="w-4 h-4 mr-1" />
+            </transition>
+            {{ descriptionCopied ? 'Kopyalandı' : 'Kopyala' }}
+          </button>
+        </div>
+        <div
+          class="border-l-4 border-teal-500 pl-4 py-3 bg-teal-50 dark:bg-teal-900/20 rounded-r-md"
         >
-          <ArrowDownTrayIcon class="w-5 h-5 mr-2" />
-          Metinleri Kopyala
-        </button>
+          <div class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
+            {{ generatedData.description }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -423,3 +494,19 @@ const goToHome = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+button {
+  transition: all 0.2s ease;
+}
+</style>
