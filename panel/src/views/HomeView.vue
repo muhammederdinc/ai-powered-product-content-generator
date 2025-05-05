@@ -2,7 +2,9 @@
 import { ref } from 'vue'
 import { useDarkMode } from '../composables/useDarkMode'
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { isDarkMode, themeMode, setThemeMode } = useDarkMode()
 
 const changeTheme = (mode: 'light' | 'dark' | 'auto') => {
@@ -92,6 +94,9 @@ const startGeneration = () => {
   // Burada backend API'ye istek gönderilecek
   console.log('Ürün bilgileri:', productDetails.value)
   console.log('Fotoğraf sayısı:', productPhotos.value.length)
+
+  // Mock veriler kullanılarak sonuç sayfasına yönlendirilecek
+  router.push('/result')
 }
 </script>
 

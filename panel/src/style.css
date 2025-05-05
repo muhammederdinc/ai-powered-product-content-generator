@@ -40,3 +40,64 @@
 .transition-theme {
   @apply transition-all duration-200 ease-in-out;
 }
+
+/* Sonuç sayfası stilleri */
+.result-page-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.instagram-card {
+  @apply bg-white dark:bg-slate-900 rounded-lg p-0 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col;
+  height: calc(100vh - 360px);
+  min-height: 750px;
+  max-height: 850px;
+}
+
+.instagram-card:hover {
+  @apply transform -translate-y-1;
+}
+
+.instagram-header {
+  @apply flex items-center p-3 border-b border-gray-200 dark:border-slate-700;
+}
+
+.instagram-post-actions {
+  @apply flex items-center justify-between px-3 py-2;
+}
+
+.instagram-button {
+  @apply p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors focus:outline-none;
+}
+
+.instagram-story-progress {
+  @apply absolute top-0 left-0 right-0 h-1 bg-black/20 dark:bg-slate-900/80 p-0.5;
+}
+
+.image-card {
+  @apply aspect-[3/4] overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-all duration-300;
+}
+
+.image-card:hover {
+  @apply transform scale-[1.02];
+}
+
+.btn-floating {
+  @apply flex items-center px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5;
+}
+
+/* Özel koyu tema stilleri */
+.dark-mode-result {
+  @apply bg-slate-950 text-white;
+}
+
+.dark-mode-card {
+  @apply bg-slate-900 rounded-xl p-6 shadow-md;
+}
+
+.dark-mode-btn {
+  @apply bg-slate-800 text-gray-200 hover:bg-slate-700;
+}
+
+.dark-mode-instagram-bg {
+  @apply bg-gradient-to-r from-purple-600 to-pink-600;
+}
