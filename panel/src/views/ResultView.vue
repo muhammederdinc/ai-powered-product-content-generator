@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  ArrowPathIcon,
-  ArrowDownTrayIcon,
-  ShareIcon,
-  ClipboardIcon,
-  CheckIcon,
-} from '@heroicons/vue/24/outline'
+import { ArrowPathIcon, ArrowDownTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
 import { useDarkMode } from '../composables/useDarkMode'
+import CopyButton from '../components/CopyButton.vue'
 
 const router = useRouter()
 const { isDarkMode } = useDarkMode()
@@ -64,30 +59,9 @@ const goToHome = () => {
   router.push('/')
 }
 
-// Kopyalama durumlarını izlemek için ref'ler
-const titleCopied = ref(false)
-const descriptionCopied = ref(false)
-
-// Kopyalama işlevi
-const copyToClipboard = (text: string, type: 'Başlık' | 'Açıklama') => {
-  navigator.clipboard
-    .writeText(text)
-    .then(() => {
-      if (type === 'Başlık') {
-        titleCopied.value = true
-        setTimeout(() => {
-          titleCopied.value = false
-        }, 2000)
-      } else {
-        descriptionCopied.value = true
-        setTimeout(() => {
-          descriptionCopied.value = false
-        }, 2000)
-      }
-    })
-    .catch((err) => {
-      console.error('Kopyalama başarısız oldu:', err)
-    })
+// Kopyalama olayı işleyicisi
+const handleCopied = (text: string) => {
+  console.log(`Kopyalandı: ${text.substring(0, 20)}...`)
 }
 </script>
 
@@ -159,21 +133,7 @@ const copyToClipboard = (text: string, type: 'Başlık' | 'Açıklama') => {
       <div class="mb-6 bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">Ürün Başlığı</h3>
-          <button
-            @click="copyToClipboard(generatedData.productName, 'Başlık')"
-            class="flex items-center px-3 py-1 rounded-lg text-sm transition-colors"
-            :class="
-              titleCopied
-                ? 'bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200'
-                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600'
-            "
-          >
-            <transition name="fade" mode="out-in">
-              <CheckIcon v-if="titleCopied" class="w-4 h-4 mr-1" />
-              <ClipboardIcon v-else class="w-4 h-4 mr-1" />
-            </transition>
-            {{ titleCopied ? 'Kopyalandı' : 'Kopyala' }}
-          </button>
+          <CopyButton :text="generatedData.productName" @copied="handleCopied" />
         </div>
         <div
           class="border-l-4 border-indigo-500 pl-4 py-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-r-md"
@@ -188,21 +148,7 @@ const copyToClipboard = (text: string, type: 'Başlık' | 'Açıklama') => {
       <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow">
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">Ürün Açıklaması</h3>
-          <button
-            @click="copyToClipboard(generatedData.description, 'Açıklama')"
-            class="flex items-center px-3 py-1 rounded-lg text-sm transition-colors"
-            :class="
-              descriptionCopied
-                ? 'bg-green-200 dark:bg-green-800 text-green-700 dark:text-green-200'
-                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600'
-            "
-          >
-            <transition name="fade" mode="out-in">
-              <CheckIcon v-if="descriptionCopied" class="w-4 h-4 mr-1" />
-              <ClipboardIcon v-else class="w-4 h-4 mr-1" />
-            </transition>
-            {{ descriptionCopied ? 'Kopyalandı' : 'Kopyala' }}
-          </button>
+          <CopyButton :text="generatedData.description" @copied="handleCopied" />
         </div>
         <div
           class="border-l-4 border-teal-500 pl-4 py-3 bg-teal-50 dark:bg-teal-900/20 rounded-r-md"
@@ -494,19 +440,3 @@ const copyToClipboard = (text: string, type: 'Başlık' | 'Açıklama') => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-button {
-  transition: all 0.2s ease;
-}
-</style>
