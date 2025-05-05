@@ -1,12 +1,42 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowPathIcon, ArrowDownTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
 import { useDarkMode } from '../composables/useDarkMode'
+import { useImageDownload } from '../composables/useImageDownload'
+import ImageCard from '../components/ImageCard.vue'
+import ImagePreview from '../components/ImagePreview.vue'
 import CopyButton from '../components/CopyButton.vue'
 
 const router = useRouter()
 const { isDarkMode } = useDarkMode()
+const { downloadImage, downloadMultipleImages, isDownloading } = useImageDownload()
+
+// Fotoğraf önizleme durumu
+const previewImage = ref({
+  src: '',
+  alt: '',
+  isOpen: false,
+})
+
+// Preview fotoğrafı açma
+const openPreview = (src: string, alt: string) => {
+  previewImage.value = {
+    src,
+    alt,
+    isOpen: true,
+  }
+}
+
+// Preview fotoğrafı kapatma
+const closePreview = () => {
+  previewImage.value.isOpen = false
+}
+
+// Tek fotoğraf indirme işlevi
+const handleDownloadImage = (src: string, fileName: string) => {
+  downloadImage(src, fileName)
+}
 
 // Mock veriler
 const generatedData = ref({
@@ -17,7 +47,7 @@ const generatedData = ref({
     'https://images.unsplash.com/photo-1485462537746-965f33f7f6a7?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     'https://images.unsplash.com/photo-1678520401057-7d32aee54eba?q=80&w=2113&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=600&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1599662875272-64de8289f6d8?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1613005798967-632017e477c8?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     'https://images.unsplash.com/photo-1553984658-d17e19aa281a?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     'https://images.unsplash.com/photo-1536129808005-fae894214c73?q=80&w=2095&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   ],
@@ -29,6 +59,16 @@ const generatedData = ref({
     },
   },
 })
+
+// Tüm fotoğrafları indirme
+const downloadAllPhotos = () => {
+  const photos = generatedData.value.photos.map((url, index) => ({
+    url,
+    fileName: `urun-foto-${index + 1}.jpg`,
+  }))
+
+  downloadMultipleImages(photos)
+}
 
 // Yeniden oluşturma fonksiyonu
 const regenerateContent = () => {
@@ -101,26 +141,25 @@ const handleCopied = (text: string) => {
       <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Ürün Fotoğrafları</h2>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div
-          v-for="(photo, index) in generatedData.photos"
-          :key="index"
-          class="image-card bg-gray-200 dark:bg-slate-800"
-        >
-          <img
+        <div class="h-[360px]" v-for="(photo, index) in generatedData.photos" :key="index">
+          <ImageCard
             :src="photo"
             :alt="`${generatedData.productName} - Görsel ${index + 1}`"
-            class="w-full h-full object-cover"
+            :index="index"
+            @download="handleDownloadImage"
+            @preview="openPreview"
           />
         </div>
       </div>
 
       <div class="mt-4 flex justify-end">
         <button
-          @click="downloadContent('photos')"
+          @click="downloadAllPhotos"
           class="flex items-center px-4 py-2 bg-gray-200 dark:bg-slate-800 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors mr-2"
+          :disabled="isDownloading"
         >
           <ArrowDownTrayIcon class="w-5 h-5 mr-2" />
-          Fotoğrafları İndir
+          {{ isDownloading ? 'İndiriliyor...' : 'Tüm Fotoğrafları İndir' }}
         </button>
       </div>
     </div>
@@ -220,7 +259,13 @@ const handleCopied = (text: string) => {
           </div>
 
           <div
-            class="flex-grow relative overflow-hidden bg-gray-200 dark:bg-slate-800 flex items-center justify-center"
+            class="flex-grow relative overflow-hidden bg-gray-200 dark:bg-slate-800 flex items-center justify-center cursor-pointer"
+            @click="
+              openPreview(
+                generatedData.socialMedia.instagram.post,
+                `${generatedData.productName} - Instagram Post`,
+              )
+            "
           >
             <img
               :src="generatedData.socialMedia.instagram.post"
@@ -312,9 +357,12 @@ const handleCopied = (text: string) => {
             class="px-4 py-2 flex justify-end space-x-2 border-t border-gray-200 dark:border-slate-700"
           >
             <button
-              @click="downloadContent('instagram')"
+              @click="
+                handleDownloadImage(generatedData.socialMedia.instagram.post, 'instagram-post.jpg')
+              "
               class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="İndir"
+              :disabled="isDownloading"
             >
               <ArrowDownTrayIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
@@ -369,7 +417,13 @@ const handleCopied = (text: string) => {
           </div>
 
           <div
-            class="flex-grow aspect-[9/16] overflow-hidden relative bg-gray-200 dark:bg-slate-800"
+            class="flex-grow aspect-[9/16] overflow-hidden relative bg-gray-200 dark:bg-slate-800 cursor-pointer"
+            @click="
+              openPreview(
+                generatedData.socialMedia.instagram.story,
+                `${generatedData.productName} - Instagram Story`,
+              )
+            "
           >
             <img
               :src="generatedData.socialMedia.instagram.story"
@@ -413,9 +467,15 @@ const handleCopied = (text: string) => {
             class="px-4 py-2 flex justify-end space-x-2 border-t border-gray-200 dark:border-slate-700"
           >
             <button
-              @click="downloadContent('instagram')"
+              @click="
+                handleDownloadImage(
+                  generatedData.socialMedia.instagram.story,
+                  'instagram-story.jpg',
+                )
+              "
               class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
               title="İndir"
+              :disabled="isDownloading"
             >
               <ArrowDownTrayIcon class="w-5 h-5 text-gray-700 dark:text-white" />
             </button>
@@ -438,5 +498,13 @@ const handleCopied = (text: string) => {
         Yeniden Oluştur
       </button>
     </div>
+
+    <!-- Fotoğraf Önizleme Bileşeni -->
+    <ImagePreview
+      :src="previewImage.src"
+      :alt="previewImage.alt"
+      :is-open="previewImage.isOpen"
+      @close="closePreview"
+    />
   </div>
 </template>
