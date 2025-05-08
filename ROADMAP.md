@@ -29,9 +29,9 @@ Oluşturulan her ürün içeriği, arama motorlarında daha üst sıralara çık
 
 ### 🔹 A. Proje Hazırlığı
 
-- [ ] Proje yapısının belirlenmesi (Nuxt 3 website + Vue 3 panel)
-- [ ] Repo & temel dizinlerin oluşturulması
-- [ ] UI Kit seçimi ve taslak tasarımlar
+- [✔] Proje yapısının belirlenmesi (Nuxt 3 website + Vue 3 panel)
+- [✔] Repo & temel dizinlerin oluşturulması
+- [✔] UI Kit seçimi ve taslak tasarımlar
 
 ### 🔹 B. Web Sitesi (Landing Page)
 
@@ -45,8 +45,8 @@ Oluşturulan her ürün içeriği, arama motorlarında daha üst sıralara çık
 
 - [ ] Oturum açma/kayıt ekranı
 - [ ] Abonelik planı seçimi (Stripe entegrasyonu)
-- [ ] Ürün yükleme ekranı (resim + kısa açıklama girişi)
-- [ ] AI çıktılarını gösteren ekran (görsel, başlık, açıklama)
+- [✔] Ürün yükleme ekranı (resim + kısa açıklama girişi)
+- [✔] AI çıktılarını gösteren ekran (görsel, başlık, açıklama)
 - [ ] Sosyal medya görseli oluşturma ekranı (opsiyonel MVP'de)
 
 ### 🔹 D. AI Entegrasyonu
