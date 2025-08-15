@@ -4,8 +4,14 @@ import { useDarkMode } from './composables/useDarkMode'
 
 // Tüm uygulama seviyesinde dark mode ayarını başlat
 const { isDarkMode } = useDarkMode()
-console.log('TEST')
+console.log('TEST 1')
 console.log('TEST 2')
+console.log('TEST 3')
+console.log('TEST 4')
+console.log('TEST 5')
+console.log('TEST 6')
+console.log('TEST 7')
+console.log('TEST 8')
 </script>
 
 <template>
