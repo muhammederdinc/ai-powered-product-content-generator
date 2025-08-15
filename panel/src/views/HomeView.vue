@@ -8,7 +8,17 @@ const router = useRouter()
 const { isDarkMode, themeMode, setThemeMode } = useDarkMode()
 
 const changeTheme = (mode: 'light' | 'dark' | 'auto') => {
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
   setThemeMode(mode)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
+  console.log(isDarkMode.value)
 }
 
 const cards = ref([
