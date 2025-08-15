@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useDarkMode } from '../composables/useDarkMode'
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
