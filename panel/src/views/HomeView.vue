@@ -7,8 +7,25 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const { isDarkMode, themeMode, setThemeMode } = useDarkMode()
 
+console.log(themeMode.value)
+console.log(themeMode.value)
+console.log(themeMode.value)
+console.log(themeMode.value)
+console.log(themeMode.value)
 const changeTheme = (mode: 'light' | 'dark' | 'auto') => {
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
   setThemeMode(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
+  console.log(mode)
 }
 
 const cards = ref([
