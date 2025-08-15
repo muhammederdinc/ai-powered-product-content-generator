@@ -9,6 +9,7 @@ const { isDarkMode, themeMode, setThemeMode } = useDarkMode()
 
 const changeTheme = (mode: 'light' | 'dark' | 'auto') => {
   setThemeMode(mode)
+  console.log('Muhammed')
 }
 
 const cards = ref([
