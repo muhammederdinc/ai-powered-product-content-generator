@@ -48,7 +48,7 @@ const handleDownloadImage = (src: string, fileName: string) => {
 
 // Mock veriler
 const generatedData = ref({
-  productName: 'Beyaz Pamuklu Midi Tişört Elbise',
+  productName: 'Beyaz Pamuklu Midi Tişört Elbise. TEST',
   description:
     'Bu rahat beyaz pamuklu midi tişört elbise, kapalı giyime uygun şekilde tasarlanmıştır. Uzun tasarımı, 20-40 yaş arası kadınlar için ideal olup, konforlu bir günlük stil sunar.\n\nYüksek kaliteli %100 organik pamuktan üretilen bu elbise, nefes alan yapısı sayesinde yaz aylarında serin, ilkbahar ve sonbahar aylarında ise şık bir görünüm sağlar. A kesim modeli ile vücut hatlarını nazikçe saran tasarımı, her vücut tipine uyum sağlar.\n\nYan cepleri ve ayarlanabilir bel kısmı ile günlük kullanım için fonksiyonel bir seçenektir. Kolay yıkama özelliği ve ütü gerektirmeyen kumaşı sayesinde bakımı oldukça kolaydır.\n\nMakinede 30 derecede yıkanabilir, asarak kurutulması önerilir. Seyahatlerinizde de kolayca bavulunuzda taşıyabileceğiniz bu elbise, kırışma yapmayan özelliği ile her zaman şık görünmenizi sağlar.',
   photos: [
